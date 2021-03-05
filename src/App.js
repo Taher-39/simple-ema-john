@@ -10,23 +10,27 @@ import {
 import Review from './components/Review/Review';
 import Inventory from './components/Inventory/Inventory';
 import NotFound from './components/NotFound/NotFound';
+import ProductDetails from './components/ProductDetails/ProductDetails';
 function App() {
   return (
     <div>
       <Header></Header>
       <Router>
         <Switch>
-          <Route path="shop">
+          <Route path="/shop">
             <Shop></Shop>
           </Route>
-          <Route path="review">
+          <Route path="/review">
             <Review></Review>
           </Route>
-          <Route path='inventory'>
+          <Route path='/inventory'>
             <Inventory></Inventory>
           </Route>
           <Route exact path="/">
               <shop></shop>
+          </Route>
+          <Route path="/product/:ProductKey">
+              <ProductDetails></ProductDetails>
           </Route>
           <Route path="*">
               <NotFound></NotFound>
