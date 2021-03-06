@@ -11,7 +11,10 @@ import Review from './components/Review/Review';
 import Inventory from './components/Inventory/Inventory';
 import NotFound from './components/NotFound/NotFound';
 import ProductDetails from './components/ProductDetails/ProductDetails';
+import { useState } from 'react';
 function App() {
+  const mark = Math.floor(Math.random() * 31) + 30;
+  const [familiar, setFamiliar] = useState(mark);
   return (
     <div>
       <Header></Header>
@@ -24,10 +27,12 @@ function App() {
             <Review></Review>
           </Route>
           <Route path='/inventory'>
-            <Inventory></Inventory>
+            <h3 style={{textAlign: 'center'}}>Assignment Average = {mark}</h3>
+            <button style={{ textAlign: 'center', marginLeft: '46%'}} onClick={() => setFamiliar(!familiar)}>Toggle Average</button>
+            <Inventory mark={mark}></Inventory>
           </Route>
           <Route exact path="/">
-              <shop></shop>
+              <Shop></Shop>
           </Route>
           <Route path="/product/:ProductKey">
               <ProductDetails></ProductDetails>
