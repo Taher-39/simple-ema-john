@@ -172,13 +172,13 @@ function Login() {
                 user.isSignedIn ? <button onClick={handleSignOut}>Sign Out</button>
                     : <button onClick={handleSignIn}>Sign In</button>
             }
-            {
+            {/* {
                 user.isSignedIn && <div>
                     <p>Name: {user.name}</p>
                     <p>Email: {user.email}</p>
                     <img src={user.photo} width="15%" alt="" />
                 </div>
-            }
+            } */}
             <br />
             <button onClick={handleFbClick}>Sign Up With FaceBook</button>
             {/* {
