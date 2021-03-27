@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import fakeData from '../../fakeData';
 import { getDatabaseCart, removeFromDatabaseCart, processOrder } from '../../utilities/databaseManager';
 import Cart from '../Cart/Cart';
 import ReviewItems from '../ReviewItems/ReviewItems';
@@ -11,12 +10,8 @@ const Review = () => {
     const history = useHistory();
     const handleCheckOut = () => {
         history.push('/shipment')
-        // setCart([])
-        // setOrderPlaced(true)
-        // processOrder()
     }
     const removeCartItem = (cutItem) =>{
-        // console.log('clicked', cutItem)
         const newCart = cart.filter(item => item.key !== cutItem)
         setCart(newCart)
         removeFromDatabaseCart(cutItem);
@@ -24,12 +19,16 @@ const Review = () => {
     useEffect(() => {
       const savedCart =  getDatabaseCart()
       const productKeys = Object.keys(savedCart);
-      const carts = productKeys.map(key => {
-           const product = fakeData.find(pd => pd.key === key )
-           product.quantity = savedCart[key]
-           return product; 
-        })
-        setCart(carts);
+
+        fetch('http://localhost:5000/productsByKeys', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(productKeys)
+      })
+      .then(res => res.json())
+      .then(data => {
+          setCart(data)
+      })
     }, []);
     let thanks;
     if (orderPlaced){

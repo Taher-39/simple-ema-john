@@ -11,8 +11,6 @@ if (!firebase.apps.length) {
     firebase.app(); // if already initialized, use that one
 }
 
-// firebase.initializeApp(firebaseConfig)
-
 function Login() {
     const [newUser, setNewUser] = useState(false)
     const [user, setUser] = useState({
@@ -31,37 +29,27 @@ function Login() {
     const googleProvider = new firebase.auth.GoogleAuthProvider();
     const fbProvider = new firebase.auth.FacebookAuthProvider();
     
-
-    const handleSignIn = () => {
-        firebase.auth().signInWithPopup(googleProvider)
-            .then(res => {
-                const { displayName, photoURL, email } = res.user;
-                const isSignedInUser = {
-                    isSignedIn: true,
-                    name: displayName,
-                    email: email,
-                    photo: photoURL
-                }
-                setUser(isSignedInUser)
-                // console.log(displayName, photoURL, email)
-            })
-            .catch(err => {
-                console.log(err)
-                console.log(err.massage)
-            })
+    const handleGoogleSignIn = () => {
+        firebase.auth().signInWithPopup(googleProvider).then(function (result) {
+            const { displayName, email } = result.user;
+            const signedInUser = { name: displayName, email }
+            setLoggedInUser(signedInUser);
+            history.replace(from);
+            // ...
+        }).catch(function (error) {
+            const errorMessage = error.message;
+            console.log(errorMessage);
+        });
     }
+
     const handleFbClick = () => {
         firebase
             .auth()
             .signInWithPopup(fbProvider)
             .then((result) => {
-                /** @type {firebase.auth.OAuthCredential} */
                 var credential = result.credential;
-                // The signed-in user info.
                 var user = result.user;
-                // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 var accessToken = credential.accessToken;
-                // ...
                 setUser(user)
                 console.log('Fb User After SignIn', user);
             })
@@ -69,9 +57,7 @@ function Login() {
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                // The email of the user's account used.
                 var email = error.email;
-                // The firebase.auth.AuthCredential type that was used.
                 var credential = error.credential;
             });
     }
@@ -127,7 +113,6 @@ function Login() {
                     newUserInfo.error = error.message;
                     newUserInfo.success = false;
                     setUser(newUserInfo)
-                    // console.log(error.message)
                 });
         }
         if (!newUser && user.email && user.password) {
@@ -168,30 +153,12 @@ function Login() {
 
     return (
         <div style={{textAlign: 'center'}}>
-            {
-                user.isSignedIn ? <button onClick={handleSignOut}>Sign Out</button>
-                    : <button onClick={handleSignIn}>Sign In</button>
-            }
-            {/* {
-                user.isSignedIn && <div>
-                    <p>Name: {user.name}</p>
-                    <p>Email: {user.email}</p>
-                    <img src={user.photo} width="15%" alt="" />
-                </div>
-            } */}
+           
+            <button onClick={handleGoogleSignIn}>Google Sign in</button>
             <br />
             <button onClick={handleFbClick}>Sign Up With FaceBook</button>
-            {/* {
-                user && <div>
-                    <p>{user.displayName}</p>
-                    <p>{user.email}</p>
-                    <img src={user.photoURL} width="15%" alt="" />
-                </div>
-            } */}
+            
             <h2>Log In Area</h2>
-            {/* <p>Name: {user.name}</p>
-        <p>Email: {user.email}</p>
-        <p>Password: {user.password}</p> */}
             <input type="checkbox" onChange={() => setNewUser(!newUser)} name="newUser" id="" />
             <label htmlFor="newUser">New User Sign Up</label>
             <form onSubmit={handleSubmit}>

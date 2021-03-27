@@ -15,6 +15,7 @@ import { createContext, useState } from 'react';
 import Login from './components/Login/Login';
 import Shipment from './components/Shipment/Shipment';
 import PrivetRoute from './components/PrivetRoute/PrivetRoute';
+import About from './components/About/About';
 
 export const userContext = createContext()
 function App() {
@@ -40,10 +41,13 @@ function App() {
           <PrivetRoute path="/shipment">
             <Shipment></Shipment>
           </PrivetRoute>
-          <PrivetRoute path='/inventory'>
+          <PrivetRoute path='/about'>
             <h3 style={{textAlign: 'center'}}>Assignment Average = {mark}</h3>
             <button style={{ textAlign: 'center', marginLeft: '46%'}} onClick={() => setFamiliar(!familiar)}>Toggle Average</button>
-            <Inventory mark={mark}></Inventory>
+            <About mark={mark}></About>
+          </PrivetRoute>
+          <PrivetRoute path='/inventory'>
+            <Inventory></Inventory>
           </PrivetRoute>
           <Route exact path="/">
               <Shop></Shop>
