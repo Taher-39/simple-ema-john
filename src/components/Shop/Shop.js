@@ -8,19 +8,22 @@ import { Link } from 'react-router-dom';
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([])
-
+    const [searchResult, setSearchResult] = useState('')
     useEffect(() =>{
-        fetch('http://localhost:5000/products')
+        fetch('https://dry-brushlands-16145.herokuapp.com/products?search=' + searchResult)
         .then(res => res.json())
         .then(data => {
             setProducts(data)
         })
-    }, [])
+    }, [searchResult])
 
+    const handleSearch = event => {
+        setSearchResult(event.target.value)
+    }
     useEffect(() => {
         const savedCart = getDatabaseCart()
         const productKeys = Object.keys(savedCart);
-        fetch('http://localhost:5000/productsByKeys', {
+        fetch('https://dry-brushlands-16145.herokuapp.com/productsByKeys', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(productKeys)
@@ -52,6 +55,9 @@ const Shop = () => {
     return (
         <div className='twin-container'>
             <div className="product-container">
+                <input type="text" placeholder='search-product' onBlur={handleSearch} className='form-control my-0 mx-auto mt-3 w-50'  />
+                <div className="text-center py-2"><button className='btn btn-info'>Search</button></div>
+                <hr/>
                 {
                     products.map(pd => <Product 
                         productKey={false}

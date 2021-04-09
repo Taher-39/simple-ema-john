@@ -34,6 +34,7 @@ function Login() {
             const { displayName, email } = result.user;
             const signedInUser = { name: displayName, email }
             setLoggedInUser(signedInUser);
+            setToken();
             history.replace(from);
             // ...
         }).catch(function (error) {
@@ -42,6 +43,13 @@ function Login() {
         });
     }
 
+    const setToken = () => {
+        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+            sessionStorage.setItem('token', idToken)
+        }).catch(function (error) {
+            // Handle error
+        });
+    }
     const handleFbClick = () => {
         firebase
             .auth()
